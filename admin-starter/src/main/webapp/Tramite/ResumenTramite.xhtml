@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:adm="http://github.com/adminfaces"
+                template="#{layoutMB.template}">
+
+    <ui:define name="metadata">
+        <ui:param name="title" value="Resumen Tramite"/>
+        <style type="text/css">
+            .ui-datatable .ui-datatable-header {
+                text-align: right !important;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="description">
+        Gestión de Trámites
+    </ui:define>
+
+    <ui:define name="body">
+
+        <h:form id="tramiteForm">
+
+            <!-- Pestañas Datos Tramite y Datos Cliente -->
+            <p:panel header="Datos Tramite" toggleable="true" collapsed="true">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Número Tramite:" />
+                    <h:outputText value="#{uiresumen.nroTramite}" />
+
+                    <h:outputLabel value="Fecha Ingreso:" />
+                    <h:outputText value="#{uiresumen.fechaRecepcionTramite}" />
+
+                    <h:outputLabel value="Plazo entrega documentación:" />
+                    <h:outputText value="#{uiresumen.plazoDocumentacion}" />
+
+                    <h:outputLabel value="Cod Tipo Tramite:" />
+                    <h:outputText value="#{uiresumen.codTipoTramite}" />
+
+                    <h:outputLabel value="Tipo Tramite:" />
+                    <h:outputText value="#{uiresumen.nombreTipoTramite}" />
+
+                    <h:outputLabel value="Estado Tramite:" />
+                    <h:outputText value="#{uiresumen.nombreEstado}" />
+
+                    <h:outputLabel value="Precio:" />
+                    <h:outputText value="#{uiresumen.precioTramite}" />
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel header="Datos Cliente" toggleable="true" collapsed="true">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Nombre:" />
+                    <h:outputText value="#{uiresumen.nombreCliente}" />
+
+                    <h:outputLabel value="Apellido:" />
+                    <h:outputText value="#{uiresumen.apellidoCliente}" />
+
+                    <h:outputLabel value="DNI:" />
+                    <h:outputText value="#{uiresumen.dniCliente}" />
+
+                    <h:outputLabel value="Correo:" />
+                    <h:outputText value="#{uiresumen.mailCliente}" />
+                </h:panelGrid>
+            </p:panel>
+
+            <!-- Botón para redirigir a Documentos -->
+            <h:panelGroup>
+                <p:commandButton value="Documentos" action="#{uiresumen.irADocumentos}" />
+            </h:panelGroup>
+
+            <!-- Botón de Anular -->
+            <h:panelGroup>
+                <p:commandButton value="Anular Trámite" action="#{uiresumen.anularTramite}" />
+            </h:panelGroup>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

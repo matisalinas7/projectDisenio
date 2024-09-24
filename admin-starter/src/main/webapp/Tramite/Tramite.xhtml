@@ -63,7 +63,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
                             <p:outputLabel for="codTipoTramite" value="Codigo tipo trámite:" />
                             <br/>
                             <p:inputText id="codTipoTramite" value="#{uitramite.codTipoTramite}" style="width: 100px;">
-                                <p:ajax event="blur" update="nombreTipoTramiteSeleccionado" listener="#{uitramite.obtenerTipoTramite()}" />
+                                <p:ajax event="blur" update="nombreTipoTramite" listener="#{uitramite.obtenerTipoTramite()}" />
                             </p:inputText>
                         </div>
 
@@ -78,8 +78,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/XHtml.xhtml to edit t
 
                         <!-- Campo de Nombre Tipo Trámite -->
                         <div>
-                            <p:outputLabel for="nombreTipoTramiteSeleccionado" value="Nombre Tipo Trámite:" />
-                            <p:inputText id="nombreTipoTramiteSeleccionado" value="#{uitramite.nombreTipoTramiteSeleccionado}" disabled="true" />
+                            <p:outputLabel for="nombreTipoTramite" value="Nombre Tipo Trámite:" />
+                            <p:inputText id="nombreTipoTramite" value="#{uitramite.nombreTipoTramite}" disabled="true" />
                         </div>
                     </div>
 
