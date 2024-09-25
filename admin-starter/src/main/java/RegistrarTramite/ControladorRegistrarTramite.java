@@ -37,7 +37,7 @@ public class ControladorRegistrarTramite {
         return expertoRegistrarTramite.mostrarResumenTramite(nroTramite);
     }
 
-    public void anularTramite(int nroTramite) {
+    public void anularTramite(int nroTramite) throws RegistrarTramiteException {
         expertoRegistrarTramite.anularTramite(nroTramite);
     }
 

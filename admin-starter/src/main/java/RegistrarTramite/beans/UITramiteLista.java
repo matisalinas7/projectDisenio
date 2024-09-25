@@ -155,7 +155,7 @@ public class UITramiteLista implements Serializable {
     public void anularTramite(int nroTramite) {
     }
 
-    // loop por cada DTOTipoTramnite desde la UI para mostrar los TipoTramite filtrados
+    // loop por cada DTOTipoTramite desde la UI para mostrar los TipoTramite filtrados
     public List<FiltrosTipoTramiteGrillaUI> buscarTipoTramite() {
         System.out.println(codTipoTramiteFiltro);
         System.out.println(nombreTipoTramiteFiltro);

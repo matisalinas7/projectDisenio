@@ -9,6 +9,7 @@ public class DTOTramiteElegido {
    
     private int nroTramite;
     private Timestamp fechaRecepcionTramite;
+    private Timestamp fechaAnulacionTramite;
     private int plazoDocumentacion;
     private int codTipoTramite;
     private String nombreTipoTramite;
@@ -18,7 +19,7 @@ public class DTOTramiteElegido {
     private String nombreCliente;
     private String apellidoCliente;
     private String mailCliente;
-    private List<DTODocumentacion> resumenDoc = new ArrayList<>(); //para agregar la documentacion al resumen
+    private List<DTODocumentacion> resumenDoc = new ArrayList<DTODocumentacion>(); //para agregar la documentacion al resumen
 
 
     public int getNroTramite() {
@@ -35,6 +36,14 @@ public class DTOTramiteElegido {
 
     public void setFechaRecepcionTramite(Timestamp fechaRecepcionTramite) {
         this.fechaRecepcionTramite = fechaRecepcionTramite;
+    }
+
+    public Timestamp getFechaAnulacionTramite() {
+        return fechaAnulacionTramite;
+    }
+
+    public void setFechaAnulacionTramite(Timestamp fechaAnulacionTramite) {
+        this.fechaAnulacionTramite = fechaAnulacionTramite;
     }
 
     public int getPlazoDocumentacion() {

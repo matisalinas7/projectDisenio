@@ -19,6 +19,7 @@ import entidades.Tramite;
 import entidades.TramiteDocumentacion;
 import entidades.TramiteEstadoTramite;
 import entidades.Version;
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,8 +107,7 @@ public class ExpertoRegistrarTramite {
                 clienteEncontrado = (Cliente) lClientes.get(0);
             }
 
-            criterioList.clear();
-
+//            criterioList.clear();
             criterioCliente.setAtributo("cliente"); // buscar los Tramites relacionados al Cliente encontrado
             criterioCliente.setOperacion("=");
             criterioCliente.setValor(clienteEncontrado);
@@ -133,8 +133,7 @@ public class ExpertoRegistrarTramite {
                 tipoTramiteEncontrado = (TipoTramite) ltipoTramites.get(0);
             }
 
-            criterioList.clear();
-
+//            criterioList.clear();
             criterioTT.setAtributo("tipoTramite"); // buscar los Tramites relacionados al TipoTramite encontrado
             criterioTT.setOperacion("=");
             criterioTT.setValor(tipoTramiteEncontrado);
@@ -148,7 +147,7 @@ public class ExpertoRegistrarTramite {
             DTOCriterio dtoEstado = new DTOCriterio();
 
             dtoEstado.setAtributo("nombreEstadoTramite");
-            dtoEstado.setOperacion("like");
+            dtoEstado.setOperacion("=");
             dtoEstado.setValor(nombreEstadoTramite);
             criterioList.add(dtoEstado);
 
@@ -159,12 +158,10 @@ public class ExpertoRegistrarTramite {
                 estadoEncontrado = (EstadoTramite) estadoList.get(0);
             }
 
-            criterioList.clear();
-
-            dtoEstado.setAtributo("estadoTramite"); // buscar los Tramites relacionados al TipoTramite encontrado
+//            criterioList.clear();
+            dtoEstado.setAtributo("estadoTramite");
             dtoEstado.setOperacion("=");
             dtoEstado.setValor(estadoEncontrado);
-
             criterioList.add(dtoEstado);
         }
 
@@ -183,7 +180,7 @@ public class ExpertoRegistrarTramite {
             dtoTramite.setDni(tramite.getCliente().getDniCliente());
             dtoTramite.setCodTipoTramite(tramite.getTipoTramite().getCodTipoTramite());
             dtoTramite.setNombreEstado(tramite.getEstadoTramite().getNombreEstadoTramite());
-            dtoTramite.setFechaAnulacion(tramite.getFechaAnulacionTramite()); 
+            dtoTramite.setFechaAnulacion(tramite.getFechaAnulacionTramite());
 
             tramiteResultados.add(dtoTramite); // Cargo los datos seteados en dtoTramite a la lista
         }
@@ -384,6 +381,7 @@ public class ExpertoRegistrarTramite {
         // seteamos en DTOTramiteElegido los atributos del tramite seleccionado
         resumenDTO.setNroTramite(tramiteEncontrado.getNroTramite());
         resumenDTO.setFechaRecepcionTramite(tramiteEncontrado.getFechaRecepcionTramite());
+        resumenDTO.setFechaAnulacionTramite(tramiteEncontrado.getFechaAnulacionTramite());
         resumenDTO.setPlazoDocumentacion(tramiteEncontrado.getTipoTramite().getPlazoEntregaDocumentacionTT());
         resumenDTO.setCodTipoTramite(tramiteEncontrado.getTipoTramite().getCodTipoTramite());
         resumenDTO.setNombreTipoTramite(tramiteEncontrado.getTipoTramite().getNombreTipoTramite());
@@ -409,7 +407,7 @@ public class ExpertoRegistrarTramite {
     }
 
     // anularTramite()
-    public void anularTramite(int nroTramite) {
+    public void anularTramite(int nroTramite) throws RegistrarTramiteException {
         FachadaPersistencia.getInstance().iniciarTransaccion();
 
         List<DTOCriterio> criterioList = new ArrayList<DTOCriterio>();
@@ -424,7 +422,7 @@ public class ExpertoRegistrarTramite {
             criterioList.add(dto1);
         }
 
-        Tramite tramiteEncontrado = (Tramite) FachadaPersistencia.getInstance().buscar("Tramite", criterioList);
+        Tramite tramiteEncontrado = (Tramite) FachadaPersistencia.getInstance().buscar("Tramite", criterioList).get(0);
         tramiteEncontrado.setFechaAnulacionTramite(new Timestamp(System.currentTimeMillis()));
 
         FachadaPersistencia.getInstance().guardar(tramiteEncontrado);
