@@ -60,7 +60,7 @@ public class UIABMEstadoTramiteLista implements Serializable {
     public void setDescripcionFiltro(String descripcionFiltro) {
         this.descripcionFiltro = descripcionFiltro;
     }
-    
+
     public void filtrar() {
 
     }
@@ -97,11 +97,11 @@ public class UIABMEstadoTramiteLista implements Serializable {
     public void darDeBajaEstadoTramite(int codEstadoTramite) {
         try {
             controladorABMEstadoTramite.darDeBajaEstadoTramite(codEstadoTramite);
-            Messages.create("Anulado").detail("Anulado").add();;
+            Messages.create("EstadoTramite eliminado").add();
 
         } catch (EstadoTramiteException e) {
-            Messages.create("Error!").error().detail("AdminFaces Error message.").add();
+            Messages.create("Error!").error().detail("No se pudo eliminar el Estado porque está presente en el destino de una versión actual/posterior").add();
         }
     }
-
+    
 }

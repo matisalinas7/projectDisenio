@@ -194,7 +194,7 @@ public class EjemplosPersistencia {
             agendaConsultor1.setFechaAltaAgendaConsultor(new Timestamp(System.currentTimeMillis()));
 
             agendaConsultor1.addConsultor(consultor1);
-
+            
             FachadaPersistencia.getInstance().guardar(agendaConsultor1);
 
             TipoTramiteDocumentacion ttd1 = new TipoTramiteDocumentacion();

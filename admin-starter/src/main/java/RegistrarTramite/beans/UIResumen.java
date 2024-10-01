@@ -2,21 +2,33 @@ package RegistrarTramite.beans;
 
 import RegistrarTramite.ControladorRegistrarTramite;
 import RegistrarTramite.dtos.DTODocumentacion;
+import RegistrarTramite.dtos.DTOFile;
 import RegistrarTramite.dtos.DTOTramiteElegido;
 import RegistrarTramite.exceptions.RegistrarTramiteException;
+import entidades.TramiteDocumentacion;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.Part;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.omnifaces.util.Messages;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import utils.BeansUtils;
+import utils.DTOCriterio;
+import utils.FachadaPersistencia;
 
 @Named("uiresumen")
 @ViewScoped
@@ -34,6 +46,9 @@ public class UIResumen implements Serializable {
     private String nombreCliente;
     private String apellidoCliente;
     private String mailCliente;
+    private int legajoConsultor;
+    private String nombreConsultor;
+    private int codTD;
     private String nombreDocumentacion;
     private Timestamp fechaEntregaDoc;
     private List<DTODocumentacion> resumenDoc;
@@ -42,7 +57,7 @@ public class UIResumen implements Serializable {
     public void init() {
         // Obtener el parámetro de la URL
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String codigoTramite = params.get("codigo");
+        String codigoTramite = params.get("nroTramite");
 
         if (codigoTramite != null) {
             try {
@@ -65,10 +80,13 @@ public class UIResumen implements Serializable {
                     this.nombreCliente = tramiteElegido.getNombreCliente();
                     this.apellidoCliente = tramiteElegido.getApellidoCliente();
                     this.mailCliente = tramiteElegido.getMailCliente();
+                    this.nombreConsultor = tramiteElegido.getNombreConsultor();
+                    this.legajoConsultor = tramiteElegido.getLegajoConsultor();
 
                     this.resumenDoc = tramiteElegido.getResumenDoc();
 
                     for (DTODocumentacion doc : resumenDoc) {
+                        this.codTD = doc.getCodTD();
                         this.nombreDocumentacion = doc.getNombreDocumentacion();
                         this.fechaEntregaDoc = doc.getFechaEntregaDoc();
                     }
@@ -164,6 +182,22 @@ public class UIResumen implements Serializable {
         return mailCliente;
     }
 
+    public int getLegajoConsultor() {
+        return legajoConsultor;
+    }
+
+    public void setLegajoConsultor(int legajoConsultor) {
+        this.legajoConsultor = legajoConsultor;
+    }
+
+    public String getNombreConsultor() {
+        return nombreConsultor;
+    }
+
+    public void setNombreConsultor(String nombreConsultor) {
+        this.nombreConsultor = nombreConsultor;
+    }
+
     public String getNombreDocumentacion() {
         return nombreDocumentacion;
     }
@@ -192,6 +226,14 @@ public class UIResumen implements Serializable {
         this.fechaAnulacionTramite = fechaAnulacionTramite;
     }
 
+    public int getCodTD() {
+        return codTD;
+    }
+
+    public void setCodTD(int codTD) {
+        this.codTD = codTD;
+    }
+
     public List<DTODocumentacion> getResumenDoc() {
         return resumenDoc;
     }
@@ -212,7 +254,53 @@ public class UIResumen implements Serializable {
         }
     }
 
-    public void registrarDocumentacion(int codTD){
-        
+    public String registrarDocumentacion(int codTD) {
+        BeansUtils.guardarUrlAnterior();
+        return "CargaDocumentacion?faces-redirect=true&codTD=" + codTD + "&nroTramite=" + nroTramite;
     }
+    
+
+    private DefaultStreamedContent fileD;
+
+    public StreamedContent getFileD(int codTD) {
+
+        List<DTOCriterio> criterioList = new ArrayList<DTOCriterio>();
+
+        DTOCriterio fileCriterio = new DTOCriterio();
+        fileCriterio.setAtributo("codTD");
+        fileCriterio.setOperacion("=");
+        fileCriterio.setValor(codTD);
+
+        criterioList.add(fileCriterio);
+
+        TramiteDocumentacion td = (TramiteDocumentacion) FachadaPersistencia.getInstance().buscar("TramiteDocumentacion", criterioList).get(0);
+
+        DTOFile file = new DTOFile();
+        file.setContenidoB64(td.getArchivoTD());
+        file.setNombre(td.getNombreTD());
+
+        // Verifica si el archivo (fileEjemplo) no es nulo y tiene contenido en Base64
+        if (file != null && file.getContenidoB64() != null) {
+            try {
+                // Decodifica el contenido Base64 a un arreglo de bytes
+                byte[] data = Base64.getDecoder().decode(file.getContenidoB64());
+
+                // Crea un InputStream a partir del arreglo de bytes decodificado
+                InputStream inputStream = new ByteArrayInputStream(data);
+
+                // Construye el StreamedContent, asignando nombre, tipo de contenido y flujo
+                fileD = DefaultStreamedContent.builder()
+                        .name(file.getNombre()) // Asigna el nombre del archivo descargado
+                        .contentType("application/octet-stream") // Tipo genérico para archivos binarios
+                        .stream(() -> inputStream) // Proporciona el flujo de datos del archivo
+                        .build();
+            } catch (Exception ex) {
+                Logger.getLogger(UICargaDocumentacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        //Retorna el archivo listo para ser descargado
+        return fileD;
+    }
+
 }

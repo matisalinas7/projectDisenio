@@ -12,9 +12,9 @@ import java.util.Date;
  * @author licciardi
  */
 public class TramiteDocumentacion extends Entidad {
-    
-    
+
     private String archivoTD; // ver xq es tipo file 
+    private String nombreTD;
     private int codTD;
     private Timestamp fechaEntregaTD;
     private Documentacion documentacion;
@@ -38,6 +38,16 @@ public class TramiteDocumentacion extends Entidad {
         this.codTD = codTD;
     }
 
+    public String getNombreTD() {
+        return nombreTD;
+    }
+
+    public void setNombreTD(String nombreTD) {
+        this.nombreTD = nombreTD;
+    }
+    
+    
+
     public Timestamp getFechaEntregaTD() {
         return fechaEntregaTD;
     }
@@ -53,7 +63,5 @@ public class TramiteDocumentacion extends Entidad {
     public void setDocumentacion(Documentacion documentacion) {
         this.documentacion = documentacion;
     }
-    
-    
-    
+
 }

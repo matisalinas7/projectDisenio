@@ -2,12 +2,20 @@ package RegistrarTramite.dtos;
 
 import java.sql.Timestamp;
 
-
 public class DTODocumentacion {
+
+    private int codTD;
     private String nombreDocumentacion;
     private Timestamp fechaEntregaDoc;
-    
-    
+
+    public int getCodTD() {
+        return codTD;
+    }
+
+    public void setCodTD(int codTD) {
+        this.codTD = codTD;
+    }
+
     public String getNombreDocumentacion() {
         return nombreDocumentacion;
     }
@@ -23,5 +31,5 @@ public class DTODocumentacion {
     public void setFechaEntregaDoc(Timestamp fechaEntregaDoc) {
         this.fechaEntregaDoc = fechaEntregaDoc;
     }
-    
+
 }

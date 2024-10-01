@@ -92,6 +92,25 @@
                         </h:panelGrid>
                     </p:panel>
 
+                    <!-- Pestaña Datos Consultor -->
+                    <p:panel toggleable="true" collapsed="false" style="margin-top: 8px">
+                        <f:facet name="header">
+                            <h4><b>Datos Consultor</b></h4>
+                        </f:facet>
+
+                        <h:panelGrid columns="1">
+                            <h:panelGroup>
+                                <h:outputLabel value="Nombre:" style="font-weight:700;"/>
+                                <h:outputText value=" #{uiresumen.nombreConsultor}"/>
+                            </h:panelGroup>
+
+                            <h:panelGroup>
+                                <h:outputLabel value="Legajo:" style="font-weight:700;"/>
+                                <h:outputText value=" #{uiresumen.legajoConsultor != 0 ? uiresumen.legajoConsultor : 'Sin asignar'}" />
+                            </h:panelGroup>
+                        </h:panelGrid>
+                    </p:panel>
+
                     <!-- Botón de Anular -->
                     <p:commandButton value="Anular trámite" styleClass="btn-block btn-fatal" style="margin-top: 8px; width:160px; height:36px;" actionListener="#{uiresumen.anularTramite(nroTramite)}" disabled="#{uiresumen.fechaAnulacionTramite != null}">
                         <p:confirm header="Anulación del trámite N° #{uiresumen.nroTramite} de cliente con DNI #{uiresumen.dniCliente}" message="¿Desea anular el trámite?" icon="ui-icon-alert"/>
@@ -111,22 +130,36 @@
                             <h4><b>Documentación</b></h4>
                         </f:facet>
                         <p:dataTable id="tablaDoc" var="doc" value="#{uiresumen.resumenDoc}">
+                            <!-- Columna: Nombre documento -->
                             <p:column style="text-align: center">
                                 <f:facet name="header">Nombre documento</f:facet>
                                     #{doc.nombreDocumentacion}
                             </p:column>
 
+                            <!-- Columna: Estado Entrega -->
                             <p:column style="text-align: center">
                                 <f:facet name="header">Estado Entrega</f:facet>
                                 <h:outputText value="#{doc.fechaEntregaDoc != null ? 'ENTREGADO' : 'PENDIENTE'}" 
                                               style="color: #{doc.fechaEntregaDoc != null ? 'green' : 'red'}; font-weight: 700;" />
                             </p:column>
 
+                            <!-- Columna: Botón Agregar/Editar Entrega -->
                             <p:column style="text-align: center">
                                 <f:facet name="header">Agregar/Editar Entrega</f:facet>
-                                <p:commandButton id="codTD" icon="fa fa-edit" type="button" styleClass="btn-default" disabled="#{uiresumen.fechaAnulacionTramite != null}"/>
+                                <p:commandButton id="codTD" icon="fa fa-edit" styleClass="btn-default"
+                                                 action="#{uiresumen.registrarDocumentacion(doc.codTD)}"
+                                                 disabled="#{uiresumen.fechaAnulacionTramite != null}"/>
+
+                                <p:commandButton value="Descargar archivo" ajax="false"
+                                                 onclick="PrimeFaces.monitorDownload(start, stop);"
+                                                 icon="pi pi-arrow-down"  styleClass="btn-success">
+                                    <p:fileDownload value="#{uiresumen.getFileD(doc.codTD)}"/> 
+                                </p:commandButton>
                             </p:column>
+
+
                         </p:dataTable>
+
                     </p:panel>
                 </p:tab>
             </p:tabView>
