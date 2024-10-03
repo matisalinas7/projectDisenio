@@ -13,6 +13,7 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.Part;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -26,6 +27,7 @@ import org.omnifaces.util.Messages;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.shaded.commons.io.IOUtils;
 import utils.BeansUtils;
 import utils.DTOCriterio;
 import utils.FachadaPersistencia;
@@ -41,7 +43,7 @@ public class UIResumen implements Serializable {
     private int codTipoTramite;
     private String nombreTipoTramite;
     private String nombreEstado;
-    private int precioTramite;
+    private double precioTramite;
     private int dniCliente;
     private String nombreCliente;
     private String apellidoCliente;
@@ -49,6 +51,7 @@ public class UIResumen implements Serializable {
     private int legajoConsultor;
     private String nombreConsultor;
     private int codTD;
+    private String nombreTD;
     private String nombreDocumentacion;
     private Timestamp fechaEntregaDoc;
     private List<DTODocumentacion> resumenDoc;
@@ -87,8 +90,10 @@ public class UIResumen implements Serializable {
 
                     for (DTODocumentacion doc : resumenDoc) {
                         this.codTD = doc.getCodTD();
+                        this.nombreTD = doc.getNombreTD();
                         this.nombreDocumentacion = doc.getNombreDocumentacion();
                         this.fechaEntregaDoc = doc.getFechaEntregaDoc();
+
                     }
                 }
             } catch (NumberFormatException e) {
@@ -146,11 +151,11 @@ public class UIResumen implements Serializable {
         this.nombreEstado = nombreEstado;
     }
 
-    public int getPrecioTramite() {
+    public double getPrecioTramite() {
         return precioTramite;
     }
 
-    public void setPrecioTramite(int precioTramite) {
+    public void setPrecioTramite(double precioTramite) {
         this.precioTramite = precioTramite;
     }
 
@@ -234,12 +239,30 @@ public class UIResumen implements Serializable {
         this.codTD = codTD;
     }
 
+    public String getNombreTD() {
+        return nombreTD;
+    }
+
+    public void setNombreTD(String nombreTD) {
+        this.nombreTD = nombreTD;
+    }
+    
+    
+
     public List<DTODocumentacion> getResumenDoc() {
         return resumenDoc;
     }
 
     public void setResumenDoc(List<DTODocumentacion> resumenDoc) {
         this.resumenDoc = resumenDoc;
+    }
+
+    public DefaultStreamedContent getFileD() {
+        return fileD;
+    }
+
+    public void setFileD(DefaultStreamedContent fileD) {
+        this.fileD = fileD;
     }
 
     ControladorRegistrarTramite controladorRegistrarTramite = new ControladorRegistrarTramite();
@@ -256,11 +279,48 @@ public class UIResumen implements Serializable {
 
     public String registrarDocumentacion(int codTD) {
         BeansUtils.guardarUrlAnterior();
-        return "CargaDocumentacion?faces-redirect=true&codTD=" + codTD + "&nroTramite=" + nroTramite;
+        return "Tramite?faces-redirect=true&codTD=" + codTD + "&nroTramite=" + nroTramite;
     }
-    
 
+    // Manejar la subida del archivo
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            FacesMessage message = new FacesMessage("Exitoso", event.getFile().getFileName() + " subido.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
+            //Convierto el archivo subido en Base64
+            byte[] sourceBytes = IOUtils.toByteArray(event.getFile().getInputStream());
+            String encodedString = Base64.getEncoder().encodeToString(sourceBytes);
+
+            DTOFile fileU = new DTOFile();
+
+            //Usar DTOFile para almacenar el archivo subido
+            fileU.setNombre(event.getFile().getFileName());
+            fileU.setContenidoB64(encodedString);
+
+            //System.out.println("encriptado =" + fileEjemplo.getContenidoB64());
+            //llamo a la funcion registrarDocumentacion una vez cargado el archivo
+            controladorRegistrarTramite.registrarDocumentacion(codTD, fileU, nroTramite);
+
+            this.file = fileU;
+
+        } catch (IOException ex) {
+            Logger.getLogger(UIResumen.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+    }
+
+    // Manejar la descarga del archivo
     private DefaultStreamedContent fileD;
+    private DTOFile file = new DTOFile();
+
+    public DTOFile getFile() {
+        return file;
+    }
+
+    public void setFile(DTOFile file) {
+        this.file = file;
+    }
 
     public StreamedContent getFileD(int codTD) {
 
@@ -275,7 +335,6 @@ public class UIResumen implements Serializable {
 
         TramiteDocumentacion td = (TramiteDocumentacion) FachadaPersistencia.getInstance().buscar("TramiteDocumentacion", criterioList).get(0);
 
-        DTOFile file = new DTOFile();
         file.setContenidoB64(td.getArchivoTD());
         file.setNombre(td.getNombreTD());
 
@@ -295,8 +354,10 @@ public class UIResumen implements Serializable {
                         .stream(() -> inputStream) // Proporciona el flujo de datos del archivo
                         .build();
             } catch (Exception ex) {
-                Logger.getLogger(UICargaDocumentacion.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UIResumen.class.getName()).log(Level.SEVERE, null, ex);
+
             }
+
         }
 
         //Retorna el archivo listo para ser descargado

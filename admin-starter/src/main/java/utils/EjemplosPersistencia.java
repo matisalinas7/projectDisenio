@@ -33,7 +33,7 @@ public class EjemplosPersistencia {
      * Crea un estado, un articulo con dicho estado, una reposicion con dicho
      * estado y un detalle para esa reposicion.
      */
-    public void crearElementos() {
+    /*public void crearElementos() {
         FachadaPersistencia.getInstance().iniciarTransaccion();
 
         Estado creada = new Estado();
@@ -92,7 +92,7 @@ public class EjemplosPersistencia {
 
         FachadaPersistencia.getInstance().finalizarTransaccion();
 
-    }
+    }*/
 
     public void crearElementos2() {
 
@@ -173,7 +173,7 @@ public class EjemplosPersistencia {
             Consultor consultor1 = new Consultor();
             consultor1.setLegajoConsultor(1001);
             consultor1.setNombreConsultor("Carlos Fernández");
-            consultor1.setNroMaximoTramites(5);
+            consultor1.setNroMaximoTramites(25);
             consultor1.setFechaHoraBajaConsultor(null);
 
             FachadaPersistencia.getInstance().guardar(consultor1);
@@ -181,7 +181,7 @@ public class EjemplosPersistencia {
             Consultor consultor2 = new Consultor();
             consultor2.setLegajoConsultor(1002);
             consultor2.setNombreConsultor("Ana López");
-            consultor2.setNroMaximoTramites(3);
+            consultor2.setNroMaximoTramites(20);
             consultor2.setFechaHoraBajaConsultor(null);
 
             FachadaPersistencia.getInstance().guardar(consultor2);
@@ -194,7 +194,8 @@ public class EjemplosPersistencia {
             agendaConsultor1.setFechaAltaAgendaConsultor(new Timestamp(System.currentTimeMillis()));
 
             agendaConsultor1.addConsultor(consultor1);
-            
+            agendaConsultor1.addConsultor(consultor2);
+
             FachadaPersistencia.getInstance().guardar(agendaConsultor1);
 
             TipoTramiteDocumentacion ttd1 = new TipoTramiteDocumentacion();

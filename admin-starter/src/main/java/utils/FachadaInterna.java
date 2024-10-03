@@ -8,6 +8,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
+import org.hibernate.criterion.Order;
 
 public class FachadaInterna {
 
@@ -136,6 +137,9 @@ public class FachadaInterna {
                                 cr.add(Restrictions.between(atributo, valoresBetween[0], valoresBetween[1]));
                             }
                             break;
+                        case "desc":  // Para el orden descendente y obtener el nroTramite
+                            cr.addOrder(Order.desc(atributo));
+                            break;
                         case "contains":
                             String property = String.format("%s.%s", claseABuscar.toLowerCase(), atributo);
                             cr.setFetchMode(property, FetchMode.JOIN);
@@ -156,6 +160,16 @@ public class FachadaInterna {
         HibernateUtil.getSession().flush();
     }
 
+    void merge(Object objeto) {
+        HibernateUtil.getSession().merge(objeto);
+        HibernateUtil.getSession().flush();
+    }
+
+    void refrescar(Object objeto) {
+        HibernateUtil.getSession().refresh(objeto);
+        HibernateUtil.getSession().flush();
+    }
+
     void iniciarTransaccion() {
         if (HibernateUtil.getSession().getTransaction().isActive()) {
             HibernateUtil.getSession().getTransaction().commit();
@@ -167,6 +181,7 @@ public class FachadaInterna {
         HibernateUtil.getSession().setFlushMode(FlushMode.NEVER);
         HibernateUtil.getSession().getTransaction().commit();
         HibernateUtil.getSession().close();
+
     }
 
 }
