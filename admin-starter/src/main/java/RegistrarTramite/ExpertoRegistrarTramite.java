@@ -206,8 +206,7 @@ public class ExpertoRegistrarTramite {
             dto1.setValor(dni);
 
             criterioList.add(dto1);
-        }
-
+        } 
         // :create() DTOCliente
         DTOCliente dtoCliente = new DTOCliente();
 
@@ -269,18 +268,17 @@ public class ExpertoRegistrarTramite {
 
             int nroTramite = generarNroTramite(); // Creo el nroTramite incremental
             tramiteCreado.setNroTramite(nroTramite);
-            // setNroTramite automaticamente en MYSQL
             tramiteCreado.setFechaRecepcionTramite(new Timestamp(System.currentTimeMillis()));
             tramiteCreado.setFechaInicioTramite(null);
             tramiteCreado.setFechaFinTramite(null);
 
             if (tipoTramiteEncontrado == null || clienteEncontrado == null) {
-                throw new RegistrarTramiteException("No se pudo registrar el tramite");
+                throw new RegistrarTramiteException("No se pudo registrar el trámite");
             }
-            
+
             tramiteCreado.setCliente(clienteEncontrado);
             tramiteCreado.setTipoTramite(tipoTramiteEncontrado);
-            
+
             List<DTOCriterio> criterioList = new ArrayList<DTOCriterio>(); // creamos la lista de criterios
 
             /* buscar("ListaPrecio", "fechaHoraBaja = " + null +
@@ -372,12 +370,12 @@ public class ExpertoRegistrarTramite {
             }
 
             FachadaPersistencia.getInstance().guardar(tramiteCreado); // guardar(Tramite)
+            FachadaPersistencia.getInstance().finalizarTransaccion();
 
         } catch (RegistrarTramiteException e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encontró se puede registrar"));
+            FachadaPersistencia.getInstance().finalizarTransaccion();
+            throw e;
         }
-
-        FachadaPersistencia.getInstance().finalizarTransaccion();
 
     }
 
