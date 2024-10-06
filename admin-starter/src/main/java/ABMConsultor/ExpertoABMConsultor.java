@@ -48,7 +48,7 @@ public class ExpertoABMConsultor {
             DTOConsultor dtoConsultor = new DTOConsultor();
             dtoConsultor.setLegajoConsultor(consultor.getLegajoConsultor());
             dtoConsultor.setNombreConsultor(consultor.getNombreConsultor());
-            dtoConsultor.setNumMaximoTramites(consultor.getNroMaximoTramites());
+            dtoConsultor.setNumMaximoTramites(consultor.getNumMaximoTramites());
             dtoConsultor.setFechaHoraBajaConsultor(consultor.getFechaHoraBajaConsultor());
             consultoresResultado.add(dtoConsultor);
 
@@ -75,7 +75,7 @@ public class ExpertoABMConsultor {
             Consultor consultor = new Consultor();
             consultor.setLegajoConsultor(nuevoConsultorDTO.getLegajoConsultor());
             consultor.setNombreConsultor(nuevoConsultorDTO.getNombreConsultor());
-            consultor.setNroMaximoTramites(nuevoConsultorDTO.getNumMaximoTramites());
+            consultor.setNumMaximoTramites(nuevoConsultorDTO.getNumMaximoTramites());
 
             FachadaPersistencia.getInstance().guardar(consultor);
             FachadaPersistencia.getInstance().finalizarTransaccion();
@@ -110,7 +110,7 @@ public class ExpertoABMConsultor {
             }
             dtoModificacionDatos.setNombreConsultor(consultorEncontrado.getNombreConsultor());
             dtoModificacionDatos.setLegajoConsultor(consultorEncontrado.getLegajoConsultor());
-            dtoModificacionDatos.setNumMaximoTramites(consultorEncontrado.getNroMaximoTramites());
+            dtoModificacionDatos.setNumMaximoTramites(consultorEncontrado.getNumMaximoTramites());
             return dtoModificacionDatos;
         } catch (Exception e) {
             // Maneja la excepción
@@ -135,7 +135,7 @@ public class ExpertoABMConsultor {
 
         consultorEncontrado.setLegajoConsultor(dtoModificacionDatosIn.getLegajoConsultor());
         consultorEncontrado.setNombreConsultor(dtoModificacionDatosIn.getNombreConsultor());
-        consultorEncontrado.setNroMaximoTramites(dtoModificacionDatosIn.getNumMaximoTramites());
+        consultorEncontrado.setNumMaximoTramites(dtoModificacionDatosIn.getNumMaximoTramites());
 
         FachadaPersistencia.getInstance().guardar(consultorEncontrado);
         FachadaPersistencia.getInstance().finalizarTransaccion();

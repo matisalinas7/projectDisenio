@@ -301,13 +301,14 @@ public class UIResumen implements Serializable {
             //System.out.println("encriptado =" + fileEjemplo.getContenidoB64());
             //llamo a la funcion registrarDocumentacion una vez cargado el archivo
             controladorRegistrarTramite.registrarDocumentacion(codTD, fileU, nroTramite);
-
+           
             this.file = fileU;
 
         } catch (IOException ex) {
             Logger.getLogger(UIResumen.class.getName()).log(Level.SEVERE, null, ex);
 
         }
+        BeansUtils.recargarPagina();
     }
 
     // Manejar la descarga del archivo

@@ -187,7 +187,7 @@ public class ExpertoRegistrarTramite {
             dtoTramite.setCodTipoTramite(tramite.getTipoTramite().getCodTipoTramite());
             dtoTramite.setNombreEstado(tramite.getEstadoTramite().getNombreEstadoTramite());
 
-            tramiteResultados.add(dtoTramite); // Cargo los datos seteados en dtoTramite a la lista
+            tramiteResultados.add(dtoTramite);// Cargo los datos seteados en dtoTramite a la lista
         }
 
         return tramiteResultados; // Retorna la lista
@@ -319,7 +319,7 @@ public class ExpertoRegistrarTramite {
             DTOCriterio criterioEstado = new DTOCriterio();
             criterioEstado.setAtributo("nombreEstadoTramite");
             criterioEstado.setOperacion("like");
-            criterioEstado.setValor("Nombre1");
+            criterioEstado.setValor("Iniciado");
 
             criterioList.add(criterioEstado);
 
@@ -543,6 +543,8 @@ public class ExpertoRegistrarTramite {
 
         TramiteDocumentacion td = (TramiteDocumentacion) FachadaPersistencia.getInstance().buscar("TramiteDocumentacion", criterioListTD).get(0);
 
+        System.out.println("CODTD: " + codTD);
+        
         // Actualiza el objeto TramiteDocumentacion
         td.setArchivoTD(archivoTD.getContenidoB64());
         td.setNombreTD(archivoTD.getNombre());
@@ -589,7 +591,7 @@ public class ExpertoRegistrarTramite {
 
             // Asignar el consultor que tiene la menor cantidad de trámites asignados
             for (Consultor consultor : consultorList) {
-                int nroMaximoTramites = consultor.getNroMaximoTramites();
+                int nroMaximoTramites = consultor.getNumMaximoTramites();
 
                 // Crear criterio para contar trámites asignados
                 criterioListAgenda.clear();

@@ -1,8 +1,8 @@
 package utils;
 
-
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class BeansUtils {
@@ -27,4 +27,20 @@ public class BeansUtils {
         }
         return null;
     }
+
+    public static void recargarPagina() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+
+        // Obtiene la URL actual
+        String urlActual = externalContext.getRequestContextPath() + ((HttpServletRequest) externalContext.getRequest()).getRequestURI();
+
+        try {
+            // Redirige a la URL actual para recargar la página
+            externalContext.redirect(urlActual);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

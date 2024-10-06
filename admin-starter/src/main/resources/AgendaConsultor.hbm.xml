@@ -23,11 +23,10 @@
         <property name="fechaBajaAgendaConsultor" column="fecha_baja_agenda_consultor" type="timestamp"/>
         
         <!-- Relación ManyToMany con Consultor -->
-        <bag name="consultores" table="consultor_agenda_consultor" cascade="save-update">
+        <bag name="consultores" table="consultor_agenda_consultor">
             <key column="OIDAgendaConsultor" not-null="true"/>
             <many-to-many class="entidades.Consultor" column="OIDConsultor"/>
         </bag>
-
 
     </class>
 

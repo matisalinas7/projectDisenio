@@ -35,6 +35,7 @@ a#logout {
         padding-top:100px;
     }
 }
+
 .custom-fileupload .ui-fileupload-buttonbar {
     background-color: transparent;
     border: none;
@@ -60,20 +61,20 @@ a#logout {
 
 .ui-fileupload .ui-button {
     background-color: #007bff;
-    border: none; 
-    padding: 10px 20px; 
-    border-radius: 5px; 
-    box-shadow: none; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: none;
 }
 
 .ui-fileupload {
-    background-color: transparent; 
-    border: none; 
-    padding: 0; 
+    background-color: transparent;
+    border: none;
+    padding: 0;
 }
 
 .ui-fileupload-content {
-    display: none; 
+    display: none;
 }
 .custom-upload .ui-fileupload {
     background-color: transparent;

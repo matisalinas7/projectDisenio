@@ -15,7 +15,7 @@ public class Consultor extends Entidad {
     
     private int legajoConsultor;
     private String nombreConsultor;
-    private int nroMaximoTramites;
+    private int numMaximoTramites;
     private Timestamp fechaHoraBajaConsultor;
     private List<AgendaConsultor> agendas;  // Relación ManyToMany No se si va..
     
@@ -39,12 +39,12 @@ public class Consultor extends Entidad {
         this.nombreConsultor = nombreConsultor;
     }
 
-    public int getNroMaximoTramites() {
-        return nroMaximoTramites;
+    public int getNumMaximoTramites() {
+        return numMaximoTramites;
     }
 
-    public void setNroMaximoTramites(int nroMaximoTramites) {
-        this.nroMaximoTramites = nroMaximoTramites;
+    public void setNumMaximoTramites(int numMaximoTramites) {
+        this.numMaximoTramites = numMaximoTramites;
     }
 
     public Timestamp getFechaHoraBajaConsultor() {
