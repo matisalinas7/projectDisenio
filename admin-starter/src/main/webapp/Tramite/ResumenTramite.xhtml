@@ -11,6 +11,30 @@
     <ui:define name="body">
 
         <h:form id="tramiteForm">
+
+            <!-- Datos importantes -->
+            <p:panel style="width: 100%; margin-bottom: 12px; color: #c0c0c0;">
+                <h:panelGrid columns="3" style="width: 100%; text-align: center; padding-left: 12px; padding-right: 12px;" columnClasses="custom-column">
+                    <h:panelGroup layout="block" style="margin: 0 12px;">
+                        <h:outputLabel value="Trámite n°:" style="font-size: 18px; font-weight: 700;" />
+                        <h:outputText value="#{uiresumen.nroTramite}" style="font-size: 18px;" />
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" style="margin: 0 12px;">
+                        <h:outputLabel value="Cliente:" style="font-size: 18px; font-weight: 700;" />
+                        <h:outputText value="#{uiresumen.nombreCliente}" style="font-size: 18px; margin-left: 10px;" />
+                        <h:outputText value="#{uiresumen.apellidoCliente}" style="font-size: 18px;" />
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" style="margin: 0 12px;">
+                        <h:outputLabel value="Fecha límite documentación:" style="font-size: 18px; font-weight: 700;" />
+                        <h:outputText value="#{uiresumen.fechaLimite}" style="font-size: 18px;">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:panel>
+
             <p:tabView dynamic="true" cache="true" effect="fold">
                 <p:tab title="Datos Trámite">
                     <!-- Pestaña Datos Tramite -->
