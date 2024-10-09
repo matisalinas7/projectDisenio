@@ -18,6 +18,7 @@ public class TramiteDocumentacion extends Entidad {
     private int codTD;
     private Timestamp fechaEntregaTD;
     private Documentacion documentacion;
+    
 
     public TramiteDocumentacion() {
     }
@@ -64,4 +65,10 @@ public class TramiteDocumentacion extends Entidad {
         this.documentacion = documentacion;
     }
 
+    @Override
+    public String toString() {
+        return "TramiteDocumentacion{" + "archivoTD=" + archivoTD + ", nombreTD=" + nombreTD + ", codTD=" + codTD + ", fechaEntregaTD=" + fechaEntregaTD + ", documentacion=" + documentacion + '}';
+    }
+
+    
 }
