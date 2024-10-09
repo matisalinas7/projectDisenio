@@ -405,4 +405,8 @@ public class UIResumen implements Serializable {
         return fileD;
     }
 
+    // Boton agregar volver a tramites
+    public String irPantallaTramites() {
+        return "TramiteLista?faces-redirect=true";
+    }
 }

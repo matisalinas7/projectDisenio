@@ -442,22 +442,9 @@ public class ExpertoRegistrarTramite {
     public void anularTramite(int nroTramite) throws RegistrarTramiteException {
         FachadaPersistencia.getInstance().iniciarTransaccion();
 
-        List<DTOCriterio> criterioList = new ArrayList<DTOCriterio>();
+        tramiteElegido.setFechaAnulacionTramite(new Timestamp(System.currentTimeMillis()));
 
-        if (nroTramite > 0) {
-            DTOCriterio dto1 = new DTOCriterio();
-
-            dto1.setAtributo("nroTramite");
-            dto1.setOperacion("=");
-            dto1.setValor(nroTramite);
-
-            criterioList.add(dto1);
-        }
-
-        Tramite tramiteEncontrado = (Tramite) FachadaPersistencia.getInstance().buscar("Tramite", criterioList).get(0);
-        tramiteEncontrado.setFechaAnulacionTramite(new Timestamp(System.currentTimeMillis()));
-
-        FachadaPersistencia.getInstance().guardar(tramiteEncontrado);
+        FachadaPersistencia.getInstance().merge(tramiteElegido);
         FachadaPersistencia.getInstance().finalizarTransaccion();
     }
 

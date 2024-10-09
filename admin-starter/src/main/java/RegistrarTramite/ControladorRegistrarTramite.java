@@ -19,6 +19,22 @@ public class ControladorRegistrarTramite {
         expertoRegistrarTramite.eliminarDocumentacion(codTD, nroTramite);
     }
 
+    int ultimoNroTramite = buscarUltimoNroTramite();
+
+    public int getUltimoNroTramite() {
+        return ultimoNroTramite;
+    }
+
+    public void setUltimoNroTramite(int ultimoNroTramite) {
+        this.ultimoNroTramite = ultimoNroTramite;
+    }
+    
+    public static int buscarUltimoNroTramite() {
+        return ExpertoRegistrarTramite.buscarUltimoNroTramite();
+    }
+    
+    
+
     public TramiteDocumentacion buscarDocDescargar(int codigoDoc) {
         return expertoRegistrarTramite.buscarDocDescargar(codigoDoc);
     }
