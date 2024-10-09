@@ -41,6 +41,8 @@ public class ExpertoRegistrarTramite {
     // mostrarComboEstados(): List<DTOEstadoTramite>
     public List<DTOEstadoTramite> mostrarComboEstados() {
 
+        FachadaPersistencia.getInstance().iniciarTransaccion();
+
         List objetoList = FachadaPersistencia.getInstance().buscar("EstadoTramite", null);
 
         List<DTOEstadoTramite> estadosTramite = new ArrayList<>();
@@ -51,12 +53,14 @@ public class ExpertoRegistrarTramite {
             dtoEstadoTramite.setNombreEstado(estadoTramite.getNombreEstadoTramite());
             estadosTramite.add(dtoEstadoTramite);
         }
+        FachadaPersistencia.getInstance().finalizarTransaccion();
         return estadosTramite;
     }
 
     // mostrarTramites(nroTramite, fechaRecepcionTramite, dniCliente, codTipoTramite, nombreEstadoTramite): List<DTOTramite>
     public List<DTOTramite> mostrarTramites(int nroTramite, Date fechaRecepcionTramite, int dniCliente, int codTipoTramite, String nombreEstadoTramite) {
 
+        FachadaPersistencia.getInstance().iniciarTransaccion();
         List<DTOCriterio> criterioList = new ArrayList<DTOCriterio>();
 
         // Filtro para el nroTramite
@@ -190,6 +194,7 @@ public class ExpertoRegistrarTramite {
             tramiteResultados.add(dtoTramite);// Cargo los datos seteados en dtoTramite a la lista
         }
 
+        FachadaPersistencia.getInstance().finalizarTransaccion();
         return tramiteResultados; // Retorna la lista
     }
 
@@ -670,6 +675,18 @@ public class ExpertoRegistrarTramite {
         } catch (Exception e) {
             FachadaPersistencia.getInstance().finalizarTransaccion();
         }
+    }
+
+    public TramiteDocumentacion buscarDocDescargar(int codigoDoc) {
+        List<DTOCriterio> criterioList = new ArrayList<DTOCriterio>();
+        DTOCriterio fileCriterio = new DTOCriterio();
+        fileCriterio.setAtributo("codTD");
+        fileCriterio.setOperacion("=");
+        fileCriterio.setValor(codigoDoc);
+        criterioList.add(fileCriterio);
+        TramiteDocumentacion td = (TramiteDocumentacion) FachadaPersistencia.getInstance().buscar("TramiteDocumentacion", criterioList).get(0);
+
+        return td;
     }
 
     public int generarNroTramite() {

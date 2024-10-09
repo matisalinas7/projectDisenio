@@ -372,16 +372,7 @@ public class UIResumen implements Serializable {
 
     public StreamedContent getFileD(int codTD) {
 
-        List<DTOCriterio> criterioList = new ArrayList<DTOCriterio>();
-
-        DTOCriterio fileCriterio = new DTOCriterio();
-        fileCriterio.setAtributo("codTD");
-        fileCriterio.setOperacion("=");
-        fileCriterio.setValor(codTD);
-
-        criterioList.add(fileCriterio);
-
-        TramiteDocumentacion td = (TramiteDocumentacion) FachadaPersistencia.getInstance().buscar("TramiteDocumentacion", criterioList).get(0);
+        TramiteDocumentacion td = controladorRegistrarTramite.buscarDocDescargar(codTD);
 
         file.setContenidoB64(td.getArchivoTD());
         file.setNombre(td.getNombreTD());
