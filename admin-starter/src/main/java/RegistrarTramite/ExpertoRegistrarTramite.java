@@ -653,13 +653,19 @@ public class ExpertoRegistrarTramite {
                 td.setArchivoTD(null);
                 td.setNombreTD(null);
                 td.setFechaEntregaTD(null);
-
+               
                 // Guardar los cambios en la base de datos
                 FachadaPersistencia.getInstance().guardar(td);
             } else {
                 throw new Exception("No se encontró el documento con el código proporcionado");
             }
 
+            if (tramiteElegido.getFechaPresentacionTotalDocumentacion() != null){
+                tramiteElegido.setConsultor(null);
+                tramiteElegido.setFechaPresentacionTotalDocumentacion(null);
+                tramiteElegido.setFechaInicioTramite(null);
+            }
+            FachadaPersistencia.getInstance().merge(tramiteElegido);
             // Finalizar la transacción correctamente
             FachadaPersistencia.getInstance().finalizarTransaccion();
 
