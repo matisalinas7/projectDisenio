@@ -481,24 +481,34 @@ public class ExpertoRegistrarTramite {
         }
 
         if (nombreCategoria.trim().length() > 0) {
+            List<DTOCriterio> criterioList2 = new ArrayList<DTOCriterio>();
+
             DTOCriterio criterio3 = new DTOCriterio();
+
             criterio3.setAtributo("nombreCategoriaTipoTramite");
             criterio3.setOperacion("like");
             criterio3.setValor(nombreCategoria);
-            criterioList.add(criterio3);
+            criterioList2.add(criterio3);
 
-            CategoriaTipoTramite categoriaEncontrada = (CategoriaTipoTramite) FachadaPersistencia.getInstance().buscar("CategoriaTipoTramite", criterioList).get(0);
+            List lCategoria = FachadaPersistencia.getInstance().buscar("CategoriaTipoTramite", criterioList2);
 
-            criterioList.clear();
+            CategoriaTipoTramite categoriaEncontrada = null;
+
+            if (lCategoria.size() > 0) {
+                categoriaEncontrada = (CategoriaTipoTramite) lCategoria.get(0);
+            }
 
             DTOCriterio criterio4 = new DTOCriterio();
+
             criterio4.setAtributo("categoriaTipoTramite");
             criterio4.setOperacion("=");
             criterio4.setValor(categoriaEncontrada);
+
             criterioList.add(criterio4);
         }
 
         List objecList = FachadaPersistencia.getInstance().buscar("TipoTramite", criterioList);
+        criterioList.clear();
         List<DTOTipoTramite> tipoTramiteResultados = new ArrayList<>();
 
         // loop por cada TipoTramite para setear los atributos requeridos en DTOTipoTramite
@@ -653,14 +663,14 @@ public class ExpertoRegistrarTramite {
                 td.setArchivoTD(null);
                 td.setNombreTD(null);
                 td.setFechaEntregaTD(null);
-               
+
                 // Guardar los cambios en la base de datos
                 FachadaPersistencia.getInstance().guardar(td);
             } else {
                 throw new Exception("No se encontró el documento con el código proporcionado");
             }
 
-            if (tramiteElegido.getFechaPresentacionTotalDocumentacion() != null){
+            if (tramiteElegido.getFechaPresentacionTotalDocumentacion() != null) {
                 tramiteElegido.setConsultor(null);
                 tramiteElegido.setFechaPresentacionTotalDocumentacion(null);
                 tramiteElegido.setFechaInicioTramite(null);
