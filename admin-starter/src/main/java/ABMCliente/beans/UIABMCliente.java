@@ -14,7 +14,6 @@ import java.io.Serializable;
 import org.omnifaces.util.Messages;
 import utils.BeansUtils;
 import utils.Errores;
-//import utils.Errores;
 
 @Named("uiabmCliente")
 @ViewScoped

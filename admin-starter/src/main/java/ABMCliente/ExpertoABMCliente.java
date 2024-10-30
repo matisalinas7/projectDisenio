@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import utils.DTOCriterio;
 import utils.FachadaPersistencia;
+import utils.fechaHoraActual;
 
 public class ExpertoABMCliente {
 
@@ -179,22 +180,29 @@ public class ExpertoABMCliente {
         dto.setValor(null);
 
         criterioList.add(dto);
+        
+        dto2.setAtributo("fechaAnulacionTramite");
+        dto2.setOperacion("!=");
+        dto2.setValor(null);
+
+        criterioList.add(dto2);
 
         List objetoList = FachadaPersistencia.getInstance().buscar("Tramite", criterioList);
 
         for (Object x : objetoList) {
 
             Tramite tramite = (Tramite) x;
+            if (tramite.getCliente()!= null){
             Cliente cliente = tramite.getCliente();
             int dni = cliente.getDniCliente();
 
             if (dniEncontrado == dni) {
                 throw new ClienteException("Cliente no puede darse de baja por estar asignado en al menos a un tramite");
             }
-
+            }
         }
 
-        clienteEncontrado.setFechaHoraBajaCliente(new Timestamp(System.currentTimeMillis()));
+        clienteEncontrado.setFechaHoraBajaCliente(fechaHoraActual.obtenerFechaHoraActual());
 
         FachadaPersistencia.getInstance().guardar(clienteEncontrado);
         FachadaPersistencia.getInstance().finalizarTransaccion();
